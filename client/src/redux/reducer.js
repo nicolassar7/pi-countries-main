@@ -4,7 +4,8 @@ import {
     GET_DETAIL,
     SORT_COUNTRY,
     SORT_POPULATION,
-    ORIGINAL_ORDER
+    ORIGINAL_ORDER,
+    FILTER_BY_CONTINENT
         } from "./actions";
 
 let initialState = {
@@ -33,6 +34,7 @@ function Reducer(state = initialState, action) {
                 ...state,
                 details: action.payload
             }
+            console.log(GET_DETAIL)
         case SORT_COUNTRY:
             if (action.payload === "aToZ") {
                 return{
@@ -55,9 +57,9 @@ function Reducer(state = initialState, action) {
                 ...state,
                 countries: [...state.countryCopy]
             }
-            case SORT_POPULATION:
-    const { payload } = action;
-    let sorted;
+        case SORT_POPULATION:
+            const { payload } = action;
+            let sorted;
 
     if (payload === "asc") {
         sorted = [...state.countryCopy].sort((a, b) => {
@@ -77,7 +79,23 @@ function Reducer(state = initialState, action) {
         countries: sorted
     };
 
-
+    case FILTER_BY_CONTINENT:
+        const selectedContinent = action.payload;
+        if (selectedContinent === "all") {
+            return {
+                ...state,
+                countries: [...state.countryCopy]
+            };
+        }
+        const filteredCountries = state.countryCopy.filter(country =>
+            country.continents.includes(selectedContinent)
+        );
+        return {
+            ...state,
+            countries: filteredCountries
+        };
+    
+    
         default:
             return state;
         

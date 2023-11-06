@@ -1,50 +1,47 @@
-const axios = require ('axios');
+const axios = require('axios');
 const { Country, Activity } = require('../db');
-const  isUUID = require('../utils/isUUID');
 
-module.exports = async (req, res) =>  {
-    const {cca3} = req.params;
+module.exports = async (req, res) => {
+    const { id } = req.params;
 
     try {
         let countryDetails;
 
-        if (isUUID(cca3)){
+        const countryById = await Country.findByPk(id, {
+            include: [{
+                model: Activity,
+                attributes: ['name'],
+                through: {
+                    attributes: []
+                }
+            }]
+        });
+        console.log(countryById)
 
-            const countryById = await Country.findByPk(cca3, {
-                include: [{
-                    model: Activity,
-                    attributes: ['name'],
-                    through: {
-                        attributes: []
-                    }
-                }]
-            });
-
-            if (!countryById) {
-                throw new Error('country not found!');
-            };
-
+        if (countryById) {
             countryDetails = {
                 ...countryById.dataValues,
                 activity: countryById.dataValues.activity.map(t => t.name)
-            }
+            };
         } else {
-            const response = await axios.get(`http://localhost:5000/countries/${cca3}`)
-            const apiFind = response.data;
+            const response = await axios.get(`http://localhost:5000/countries/`);
+const apiFind = response.data; // Acceder a los datos reales de la API
 
-            countryDetails = {
-                cca3: apiFind.cca3,
-                name: apiFind.name,
-                flags: apiFind.flag,
-                continents: apiFind.continents,
-                capital: apiFind.capital,
-                subregion: apiFind.subregion,
-                area: apiFind.area,
-                population: apiFind.population,
-            }
+countryDetails = {
+    id: apiFind.cca3,
+    name: apiFind.name,
+    flags: apiFind.flag,
+    continents: apiFind.continents,
+    capital: apiFind.capital,
+    subregion: apiFind.subregion,
+    area: apiFind.area,
+    population: apiFind.population,
+};
+
         }
+
         res.status(200).json(countryDetails);
     } catch (error) {
-        res.status(404).json({ error: error.message });  
+        res.status(404).json({ error: error.message });
     }
-}
+};

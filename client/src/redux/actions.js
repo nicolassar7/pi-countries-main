@@ -6,6 +6,8 @@ export const GET_DETAIL = 'GET_DETAIL'
 export const SORT_COUNTRY = "SORT_COUNTRY"
 export const ORIGINAL_ORDER = 'ORIGINAL_ORDER'
 export const SORT_POPULATION = 'SORT_POPULATION'
+export const FILTER_BY_CONTINENT = 'FILTER_BY_CONTINENT';
+
 
 export function getCountries() {
     return async function(dispatch) {
@@ -36,19 +38,25 @@ export const getName = (name) => {
     }
 }
 
-export function getDetail (cca3){
+export function getDetail(id) {
     return async function (dispatch) {
-        const response = await axios(`http://localhost:3001/countries/${cca3}`)
-        return dispatch({
-            type: GET_DETAIL,
-            payload: response.data
-        })
-    }
-}
+      try {
+        const response = await axios.get(`http://localhost:3001/countries/${id}`);
+        dispatch({
+          type: GET_DETAIL,
+          payload: response.data
+        });
+      } catch (error) {
+        console.error('Error al obtener el detalle del país:', error);
+        // Aquí puedes manejar el error según tus necesidades, por ejemplo, enviando un mensaje de error al usuario
+      }
+    };
+  }
 
 export function sortCountry(filterName) {
     return{
-        type: SORT_COUNTRY,
+        type: SORT_COUNTRY, 
+
         payload: filterName
     }
 }
@@ -64,4 +72,11 @@ export function sortPopulation(order) {
         type: SORT_POPULATION,
         payload: order
     }
+}
+
+export function filterByContinent(continent) {
+    return {
+        type: FILTER_BY_CONTINENT,
+        payload: continent
+    };
 }

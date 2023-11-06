@@ -1,26 +1,33 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import './detail.css'
+import './detail.css';
 import { getDetail } from "../../redux/actions";
 
-function Detail () {
+function Detail() {
     const dispatch = useDispatch();
-    const details = useSelector((state) => state.details)
-    const { cca3 } = useParams()
+    const details = useSelector((state) => state.countries);
+    const { id } = useParams();
 
     useEffect(() => {
-        dispatch(getDetail(cca3))
-    }, [dispatch, cca3])
+        dispatch(getDetail(id));
+    }, [dispatch, id]);
 
-     
+    // Verifica si los detalles están cargando o no
+    if (!details) {
+        return <div className="detail">Loading...</div>;
+    }
 
-    return(
+    // Accede a las propiedades específicas de los detalles del país
+    const { name, capital, continents, subregion, area, population } = details;
+    console.log(details);
+    return (
         <div className="detail">
-            <img src={details.flags.png} alt='' />
+            <h1>{name}</h1>
+            <p>{id}</p>
         </div>
-    )
+    );
 }
 
-export default Detail
+export default Detail;
+

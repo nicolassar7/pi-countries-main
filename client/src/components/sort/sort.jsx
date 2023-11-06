@@ -34,11 +34,11 @@ function Sort ({setPage}) {
             &#10607; Z-A
           </button>
         )}
-        <p>DATE OF BIRTH</p>
-        <button name="asc" onClick={handleAsc}>
+        <p>POPULATION</p>
+        <button name="desc" onClick={handleDesc}>
         &#10607; 
         </button>
-        <button name="desc" onClick={handleDesc}>
+        <button name="asc" onClick={handleAsc}>
         &#10607; 
         </button>
         <button className="order" onClick={handleOrder}>ORDER</button>

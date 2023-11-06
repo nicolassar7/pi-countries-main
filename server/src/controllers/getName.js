@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
         try {
             dispatch({ type: 'CLEAR_DRIVER_DATA'})
             const dbSearchCountries = await Country.findAll({
-                attributes: ['cca3', 'image', 'name'],
+                attributes: ['id', 'image', 'name'],
                 include: [{
                     model: Activity,
                     attributes: ['name'],
@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
             const response = (await axios(`http://localhost:5000/countries?name=${name}`)).data;
             if (response && typeof response === 'object' && response.cca3) {
                 const apiCountries = {
-                    cca3: response.cca3,
+                    id: response?.cca3,
                     name: response.name,
                     flags: response.flags,
                     activity: response.activity

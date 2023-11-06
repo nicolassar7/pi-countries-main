@@ -6,7 +6,7 @@ module.exports = async(req, res) => {
         const countries = await Country.findAll({
             include: [{
                 model: Activity,
-                attributes: ['name'],
+                attributes: ["name", "difficulty", "duration", "season"],
                 through:{
                     attributes:[]
                 }
@@ -15,7 +15,7 @@ module.exports = async(req, res) => {
 
         const getCountries = countries.map(d => {
             return {
-                cca3: d.dataValues.cca3,
+                id: d.dataValues.cca3,
                 name: d.dataValues.name,
                 flags: d.dataValues.flags,
                 continents: d.dataValues.continents,
@@ -23,13 +23,14 @@ module.exports = async(req, res) => {
                 subregion: d.dataValues.subregion,
                 area: d.dataValues.area,
                 population: d.dataValues.population
+                
             }
         })
         const response = (await axios('http://localhost:5000/countries')).data;
 
         const apiCountries = response.map (b => {
             return{
-                cca3: b.cca3,
+                id: b.cca3,
                 name: b.name,
                 flags: b.flags,
                 continents: b.continents,

@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import './card.css';
 
 function Card({ country }) {
-    const { cca3, name, flags, continents } = country;
+    const { id, name, flags, continents } = country;
 
     return (
         <div className='card'>
-            <Link to={`/detail/${cca3}`}>
+            <Link to={`/detail/${id}`}>
             <img src={flags.png} alt='' />
             </Link>
 

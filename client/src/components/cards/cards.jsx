@@ -7,7 +7,7 @@ function Cards({ countries }) {
         <div className='cards'>
             {countries?.map((country) => (
                 <Card
-                    key={country.cca3}
+                    key={country?.id}
                     country={country}
                 />
             ))}

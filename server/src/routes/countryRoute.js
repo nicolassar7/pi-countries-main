@@ -9,7 +9,8 @@ const countryRouter = Router();
 
 countryRouter.get('/', getCountries)
 countryRouter.get('/name', getName)
-countryRouter.get('/id', getId)
+countryRouter.get("/:id", getId)
+
 
 
 module.exports = countryRouter;
